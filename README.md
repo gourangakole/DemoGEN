@@ -5,8 +5,8 @@ Instructions for installation:
  cmsenv
  mkdir GEN
  cd GEN
- git clone git@github.com:gourangakole:DemoGEN.git 
- 
+ git clone git@github.com:gourangakole/DemoGEN.git 
+ scram b
  ```
 
 # To Run 
