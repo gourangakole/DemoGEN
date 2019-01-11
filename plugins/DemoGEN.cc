@@ -139,7 +139,7 @@ DemoGEN::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
    iEvent.getByToken(LheToken_, wgtsource);
    for(size_t ki=0; ki<wgtsource->weights().size(); ki++) {
      pweight[ki]=wgtsource->weights()[ki].wgt/wgtsource->originalXWGTUP(); 
-     std::cout<<ki<<" "<<pweight[ki]<<std::endl;
+     //std::cout<<ki<<" "<<pweight[ki]<<std::endl;
    }
 
    outTree_->Fill();
