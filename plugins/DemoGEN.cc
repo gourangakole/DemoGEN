@@ -77,6 +77,7 @@ class DemoGEN : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
   const double ptMin;
   const double ptMax;
   TH1D *h1_w;
+  TH1D *p100_w;
   TTree* outTree_;
   double Htot, Hbb, Hgg, Hww, Hzz;
 
@@ -103,6 +104,7 @@ DemoGEN::DemoGEN(const edm::ParameterSet& iConfig):
   GenToken_=consumes<GenEventInfoProduct> (iConfig.getParameter<edm::InputTag>( "gentag") ) ;
   LheToken_=consumes<LHEEventProduct> (iConfig.getParameter<edm::InputTag>( "lhetag"));
   h1_w = fs->make<TH1D>("h1_w", "w", ptNBins, ptMin, ptMax);
+  p100_w = fs->make<TH1D>("p100_w", "w", ptNBins, ptMin, ptMax);
   outTree_ = fs->make<TTree>("ntree","ntree");
   outTree_->Branch("pweight"        , pweight       ,"pweight[1000]/D");
   Htot=0.; Hbb=0.; Hgg=0.; Hww=0.; Hzz=0.;
@@ -137,10 +139,29 @@ DemoGEN::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
    
    edm::Handle<LHEEventProduct> wgtsource;
    iEvent.getByToken(LheToken_, wgtsource);
+   int whichWeight = 100;
+   p100_w->Fill(wgtsource->weights()[whichWeight].wgt/wgtsource->originalXWGTUP()); 
+
    for(size_t ki=0; ki<wgtsource->weights().size(); ki++) {
      pweight[ki]=wgtsource->weights()[ki].wgt/wgtsource->originalXWGTUP(); 
      //std::cout<<ki<<" "<<pweight[ki]<<std::endl;
    }
+
+   /*
+   edm::Handle<LHERunInfoProduct> run; 
+   typedef std::vector<LHERunInfoProduct::Header>::const_iterator headers_const_iterator;
+ 
+   iRun.getByLabel( "externalLHEProducer", run );
+   LHERunInfoProduct myLHERunInfoProduct = *(run.product());
+ 
+   for (headers_const_iterator iter=myLHERunInfoProduct.headers_begin(); iter!=myLHERunInfoProduct.headers_end(); iter++){
+     std::cout << iter->tag() << std::endl;
+     std::vector<std::string> lines = iter->lines();
+     for (unsigned int iLine = 0; iLine<lines.size(); iLine++) {
+       std::cout << lines.at(iLine);
+     }
+   }
+   */
 
    outTree_->Fill();
 
