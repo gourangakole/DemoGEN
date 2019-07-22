@@ -37,13 +37,19 @@
 
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include "SimDataFormats/GeneratorProducts/interface/LHEEventProduct.h"
+#include "SimDataFormats/GeneratorProducts/interface/LHERunInfoProduct.h"
 #include "SimDataFormats/GeneratorProducts/interface/GenEventInfoProduct.h"
+#include "SimDataFormats/GeneratorProducts/interface/GenRunInfoProduct.h"
 #include "DataFormats/HepMCCandidate/interface/GenParticle.h"
 #include "FWCore/ServiceRegistry/interface/Service.h"
 #include "CommonTools/UtilAlgos/interface/TFileService.h"
 #include "TH1D.h"
 #include "TTree.h"
+#include "FWCore/Framework/interface/Run.h"//to use edm::Run
 
+using namespace edm;
+using namespace reco;
+using namespace std;
 //
 // class declaration
 //
@@ -54,7 +60,9 @@
 // constructor "usesResource("TFileService");"
 // This will improve performance in multithreaded jobs.
 
-class DemoGEN : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
+//class DemoGEN : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
+class DemoGEN : public edm::one::EDAnalyzer<edm::one::WatchRuns,edm::one::SharedResources>  {
+
    public:
       explicit DemoGEN(const edm::ParameterSet&);
       ~DemoGEN();
@@ -66,11 +74,15 @@ class DemoGEN : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
       virtual void beginJob() override;
       virtual void analyze(const edm::Event&, const edm::EventSetup&) override;
       virtual void endJob() override;
-
+      virtual void beginRun(edm::Run const&, edm::EventSetup const&) override;
+      virtual void endRun(edm::Run const&, edm::EventSetup const&) override;
+    
       // ----------member data ---------------------------
   edm::Service<TFileService> fs;
   edm::EDGetTokenT<GenEventInfoProduct> GenToken_;
   edm::EDGetTokenT<LHEEventProduct> LheToken_;
+  edm::EDGetTokenT<LHERunInfoProduct> extLHEInfo_Token; 
+
   double theWeight;
   double pweight[1000];
   const int ptNBins;
@@ -103,6 +115,8 @@ DemoGEN::DemoGEN(const edm::ParameterSet& iConfig):
   usesResource("TFileService");
   GenToken_=consumes<GenEventInfoProduct> (iConfig.getParameter<edm::InputTag>( "gentag") ) ;
   LheToken_=consumes<LHEEventProduct> (iConfig.getParameter<edm::InputTag>( "lhetag"));
+  extLHEInfo_Token= consumes<LHERunInfoProduct,edm::InRun>(edm::InputTag("externalLHEProducer",""));
+
   h1_w = fs->make<TH1D>("h1_w", "w", ptNBins, ptMin, ptMax);
   p100_w = fs->make<TH1D>("p100_w", "w", ptNBins, ptMin, ptMax);
   outTree_ = fs->make<TTree>("ntree","ntree");
@@ -178,6 +192,30 @@ DemoGEN::beginJob()
 void 
 DemoGEN::endJob() 
 {
+}
+
+void 
+DemoGEN::beginRun(const Run &iEvent, EventSetup const &iSetup ){
+  cout<<" beginrun"<<endl;
+  cout<<"end of beginrun"<<endl;
+}
+
+void 
+DemoGEN::endRun(edm::Run const& iEvent, edm::EventSetup const&) {
+  edm::Handle<LHERunInfoProduct> run;
+  typedef std::vector<LHERunInfoProduct::Header>::const_iterator headers_const_iterator;
+    
+  //iRun.getByLabel("externalLHEProducer", run);
+  iEvent.getByToken( extLHEInfo_Token, run ); 
+  LHERunInfoProduct myLHERunInfoProduct = *(run.product());
+    
+  for (headers_const_iterator iter=myLHERunInfoProduct.headers_begin(); iter!=myLHERunInfoProduct.headers_end(); iter++){
+    std::cout << iter->tag() << std::endl;
+    std::vector<std::string> lines = iter->lines();
+    for (unsigned int iLine = 0; iLine<lines.size(); iLine++) {
+      std::cout << lines.at(iLine);
+    }
+  }
 }
 
 // ------------ method fills 'descriptions' with the allowed parameters for the module  ------------
