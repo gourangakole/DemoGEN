@@ -143,40 +143,24 @@ void
 DemoGEN::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 {
    using namespace edm;
-   using namespace edm;
+
    edm::Handle<GenEventInfoProduct> genEvtInfo;
    iEvent.getByToken(GenToken_,genEvtInfo);
    theWeight = genEvtInfo->weight();
-   //   std::cout<<theWeight<<std::endl;  
+   cout<<theWeight<<endl;  
    h1_w->Fill(theWeight);
 
-   
+   /*   
    edm::Handle<LHEEventProduct> wgtsource;
    iEvent.getByToken(LheToken_, wgtsource);
    int whichWeight = 100;
-   p100_w->Fill(wgtsource->weights()[whichWeight].wgt/wgtsource->originalXWGTUP()); 
+   //   p100_w->Fill(wgtsource->weights()[whichWeight].wgt/wgtsource->originalXWGTUP()); 
 
    for(size_t ki=0; ki<wgtsource->weights().size(); ki++) {
      pweight[ki]=wgtsource->weights()[ki].wgt/wgtsource->originalXWGTUP(); 
      //std::cout<<ki<<" "<<pweight[ki]<<std::endl;
    }
-
-   /*
-   edm::Handle<LHERunInfoProduct> run; 
-   typedef std::vector<LHERunInfoProduct::Header>::const_iterator headers_const_iterator;
- 
-   iRun.getByLabel( "externalLHEProducer", run );
-   LHERunInfoProduct myLHERunInfoProduct = *(run.product());
- 
-   for (headers_const_iterator iter=myLHERunInfoProduct.headers_begin(); iter!=myLHERunInfoProduct.headers_end(); iter++){
-     std::cout << iter->tag() << std::endl;
-     std::vector<std::string> lines = iter->lines();
-     for (unsigned int iLine = 0; iLine<lines.size(); iLine++) {
-       std::cout << lines.at(iLine);
-     }
-   }
    */
-
    outTree_->Fill();
 
 }
@@ -202,6 +186,7 @@ DemoGEN::beginRun(const Run &iEvent, EventSetup const &iSetup ){
 
 void 
 DemoGEN::endRun(edm::Run const& iEvent, edm::EventSetup const&) {
+
   edm::Handle<LHERunInfoProduct> run;
   typedef std::vector<LHERunInfoProduct::Header>::const_iterator headers_const_iterator;
     
@@ -216,6 +201,8 @@ DemoGEN::endRun(edm::Run const& iEvent, edm::EventSetup const&) {
       std::cout << lines.at(iLine);
     }
   }
+
+
 }
 
 // ------------ method fills 'descriptions' with the allowed parameters for the module  ------------
