@@ -1,7 +1,9 @@
 # https://raw.githubusercontent.com/menglu21/GEN_staff/2bad2a4a8071e8ca52816d95481f21156c0fb8d4/GenValidation_PlotCode/histo.py
 # Last used
-# python TTC_GEN_plots.py -i /eos/cms/store/group/phys_top/ExtraYukawa/NanoGEN_2017/TTC_a0_M300_rhotu00_rhotc04_rhott00/TTC_a0_M300_rhotu00_rhotc04_rhott00/220710_085113/0000/TTC_a0_M300_rhotu00_rhotc04_rhott00_1.root -o test
+# python TTC_GEN_plots.py -i /eos/cms/store/group/phys_top/ExtraYukawa/NanoGEN_2017/TTC_a0_M1000_rhotu00_rhotc01_rhott00.root -o TTC_a0_M1000_rhotu00_rhotc01_rhott00_old
+# python TTC_GEN_plots.py -i /eos/cms/store/group/phys_top/ExtraYukawa/NanoGEN_2017/TTC_a0_M1000_rhotu00_rhotc01_rhott00_new.root -o TTC_a0_M1000_rhotu00_rhotc01_rhott00_new
 ##########
+
 import os, copy
 import sys
 import optparse
