@@ -163,19 +163,19 @@ def main():
 
   #GEN histos
   h_ngenjet_GEN = TH1F('ngenjet', 'ngenjet', 20, 0, 20)
-  h_j1pt_GEN = TH1F('j1pt_GEN', 'j1pt_GEN', 200, 0, 1000)
+  h_j1pt_GEN = TH1F('j1pt_GEN', 'j1pt_GEN', 100, 0, 1000)
   h_j1eta_GEN = TH1F('j1eta_GEN', 'j1eta_GEN', 100, -5, 5)
   h_j1phi_GEN = TH1F('j1phi_GEN', 'j1phi_GEN', 80, -4, 4)
   h_j1mass_GEN = TH1F('j1mass_GEN', 'j1mass_GEN', 40, 0, 40)
-  h_j2pt_GEN = TH1F('j2pt_GEN', 'j2pt_GEN', 200, 0, 1000)
+  h_j2pt_GEN = TH1F('j2pt_GEN', 'j2pt_GEN', 100, 0, 1000)
   h_j2eta_GEN = TH1F('j2eta_GEN', 'j2eta_GEN', 100, -5, 5)
   h_j2phi_GEN = TH1F('j2phi_GEN', 'j2phi_GEN', 80, -4, 4)
   h_j2mass_GEN = TH1F('j2mass_GEN', 'j2mass_GEN', 40, 0, 40)
-  h_j3pt_GEN = TH1F('j3pt_GEN', 'j3pt_GEN', 200, 0, 1000)
+  h_j3pt_GEN = TH1F('j3pt_GEN', 'j3pt_GEN', 100, 0, 1000)
   h_j3eta_GEN = TH1F('j3eta_GEN', 'j3eta_GEN', 100, -5, 5)
   h_j3phi_GEN = TH1F('j3phi_GEN', 'j3phi_GEN', 80, -4, 4)
   h_j3mass_GEN = TH1F('j3mass_GEN', 'j3mass_GEN', 40, 0, 40)
-  h_HT_GEN = TH1F('HT_GEN', 'HT_GEN', 300, 0, 1500)
+  h_HT_GEN = TH1F('HT_GEN', 'HT_GEN', 150, 0, 1500)
   
   h_Dressedlep1pt_GEN = TH1F('Dressedlep1pt_GEN', 'Dressedlep1pt_GEN', 75, 0, 150)
   h_Dressedlep1eta_GEN = TH1F('Dressedlep1eta_GEN', 'Dressedlep1eta_GEN', 60, -3, 3)
